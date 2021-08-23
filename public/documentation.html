@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Documentation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+
+<h1>MovieApp</h1>
+  <h1 class="text-center ">MovieApp Documentation</h1>
+
+<p>To build the server-side component of a “movies” web application. The web
+application will provide users with access to information about different
+movies, directors, and genres. Users will be able to sign up, update their
+personal information, and create a list of their favorite movies.
+</p>
+  <p class="text-center w-75 m-auto mb-3 mt-3">To build the server-side component of a “movies” web application. The web
+    application will provide userss with access to information about different
+    movies, directors, and genres. userss will be able to sign up, update their
+    personal information, and create a list of their favorite movies.
+  </p>
+
+  <table class="table table-striped table-bordered table-hover table-sm w-75 m-auto">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Business Logic</th>
+        <th scope="col">URL</th>
+        <th scope="col">HTTP Method</th>
+        <th scope="col">Request format</th>
+        <th scope="col">Response format</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Return a list of movies</td>
+        <td>/movies</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about all the movies</td>
+      </tr>
+      <tr>
+        <td>Return data about a movie by title</td>
+        <td>/movies/:title</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about a single movie, containing an ID<br /><em>e.g.:</em> <br> { <br> id: 1<br> title: "The Godfather", <br> genre: "crime", <br> director: "Francis Ford Coppola", <br> imageUrl:
+          "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg" <br> description: "The Godfather is a 1972 American crime film." <br /> featured: "yes" <br>} </td>
+      </tr>
+      <tr>
+        <td>Return data about a genre by name</td>
+        <td>/movies/genre/:Name</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about a genre <br /><em>e.g.:</em> { <br> genre: "crime"<br> title: "The Godfather", <br>description: "The Godfather is a 1972 American crime film." <br />} </td>
+      </tr>
+      <tr>
+        <td>Return data about a director by name</td>
+        <td>/movies/director/:Name</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about a director <br /><em>e.g.:</em> { <br> name: "Francis Ford Coppola"<br> bio: "An American film director, producer and screenwriter.", <br> born: "07.04.1939" <br> died: "-" <br> } </td>
+      </tr>
+      <tr>
+        <td>Allow new users to register</td>
+        <td>/users/:Username</td>
+        <td>POST</td>
+        <td>A JSON object holding data about the registered users <br> { <br> Username: string <br> Password: string <br> Email: string <br> Birthday: date <br> }</td>
+        <td>A response indicating whether the user was successfully registered<br>A JSON object holding data about the movie whitch added to favorites and about the user who added<br> <em>e.g.:</em> <br> { <br> favorites: [title] <br> id: 1, <br> username: "dyson", <br> password: "newPassword2", <br> e-mail:
+            "dyson@gmail.com",<br /> birthday: "1980-01-23" <br> } </td>
+      </tr>
+      <tr>
+        <td>Allow users to update their info</td>
+        <td>/users/:Username</td>
+        <td>PUT</td>
+        <td>A JSON object holding data about the users update { <br> username: string <br> password: string <br> e-mail: string <br> }</td>
+        <td>A text message indicating whether the dates was successfully updated</td>
+      </tr>
+      <tr>
+        <td>Allow users to add movies to their list of favorites</td>
+        <td>/users/:Username/movies/:MovieID</td>
+        <td>POST</td>
+        <td>None</td>
+        <td>A JSON object holding data about the movie whitch added to favorites and about the user who added<br> <em>e.g.:</em> <br> { <br> favorites: [title] <br> id: 1, <br> username: "dyson", <br> password: "newPassword2", <br> e-mail:
+          "dyson@gmail.com",<br /> birthday: "1980-01-23" <br> } </td>
+      </tr>
+      <tr>
+        <td>Allow users to remove movies to their list of favorites</td>
+        <td>/users/:Username/movies/:MovieID</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text message indicating whether the movie was successfully removed</td>
+      </tr>
+      <tr>
+        <td>Allow existing users to deregister</td>
+        <td>/users/:Username</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text message indicating whether the user was successfully deregistered</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+
+</html>
