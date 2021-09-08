@@ -1,6 +1,3 @@
-//Uploaded Aug 20
-
-
 const express = require("express");
 
 
@@ -26,18 +23,7 @@ const Users = Models.User;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const cors = require("cors");
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) { // If a specific origin isn’t found on the list of allowed origins
-      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-      return callback(new Error(message), false);
-    }
-    return callback(null, true);
-  }
-}));
+app.use(cors());
 let auth = require('./auth')(app);
 
 const passport = require('passport');
@@ -45,30 +31,25 @@ require('./passport');
 
 const { check, validationResult } = require('express-validator');
 
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-
-// mongoose.connection.once('open', function(){
-//   console.log('Conection has been made!');
-// }).on('error', function(error){
-//     console.log('Error is: ', error);
-// });
-
+//mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/movieApp', { useNewUrlParser: true, useUnifiedTopology: true });
 
 //Static file path
 app.use(express.static('public'));
 
 //1.Return a list of ALL movies to the user
-app.get('/movies', function (req, res) {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
-    .then(function (movies) {
+    .then((movies) => {
       res.status(201).json(movies);
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.error(error);
-      res.status(500).send("Error: " + error);
+      res.status(500).send('Error: ' + error);
     });
 });
+
 
 
 //2. Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
@@ -84,7 +65,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 });
 
 
-//3. Return data about a genre (description) by name/title
+//3. Return data about a genre (description) by name/title (e.g., “Thriller”)
 app.get('/movies/genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find({ 'Genre.Name': req.params.Name })
     .then((movie) => {
@@ -118,7 +99,7 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', { session: false 
 
 //5. Allow new users to register
 app.post('/users/:Username',
-  [check('Username', 'Username should be a minimum of 5 characters').isLength({ min: 5 }),
+  [check('Username', 'A Username is required!').isLength({ min: 5 }),
   check('Username', 'Username cannot contain non-alphanumeric characters!').isAlphanumeric(),
   check('Password', 'A Password is required').not().isEmpty(),
   check('Email', 'The Email address does not appear to be valid').isEmail()
@@ -267,7 +248,6 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
     });
 });
 
-//Set PORT
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
   console.log('Listening on Port ' + port);
