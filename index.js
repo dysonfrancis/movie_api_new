@@ -45,16 +45,18 @@ require('./passport');
 
 const { check, validationResult } = require('express-validator');
 
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-// mongoose.connection.once('open', function(){
-//   console.log('Conection has been made!');
-// }).on('error', function(error){
-//     console.log('Error is: ', error);
-// });
+//mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongodb + srv://myFlixDBAdmin:<password>@heroku.nbigy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // mongoose.connection.once('open', function(){
+  //   console.log('Conection has been made!');
+  // }).on('error', function(error){
+  //     console.log('Error is: ', error);
+  // });
 
 
-//Static file path
-app.use(express.static('public'));
+  //Static file path
+  app.use(express.static('public'));
 
 //1.Return a list of ALL movies to the user
 app.get('/movies', function (req, res) {
